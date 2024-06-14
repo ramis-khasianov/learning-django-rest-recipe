@@ -99,4 +99,4 @@ class PrivateTagsApiTests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
         tags = Tag.objects.filter(user=self.user)
-        self.assertEqual(tags, 0)
+        self.assertEqual(tags.count(), 0)
