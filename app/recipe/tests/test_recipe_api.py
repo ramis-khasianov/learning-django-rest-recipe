@@ -431,7 +431,6 @@ class PrivateRecipeApiTests(TestCase):
         self.assertNotIn(serializer3.data, res.data)
 
 
-
 class RecipeImageUploadTests(TestCase):
     """Test image upload for recipe"""
 

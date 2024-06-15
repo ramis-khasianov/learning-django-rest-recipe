@@ -20,6 +20,7 @@ from rest_framework.permissions import IsAuthenticated
 from core.models import Recipe, Tag, Ingredient
 from recipe import serializers
 
+
 @extend_schema_view(
     list=extend_schema(
         description='List all recipes',
@@ -27,12 +28,16 @@ from recipe import serializers
             OpenApiParameter(
                 name='tags',
                 type=OpenApiTypes.STR,
-                description='Comma separated list of tag IDs to filter recipes',
+                description='''Comma separated list of tag IDs
+                to filter recipes''',
             ),
             OpenApiParameter(
                 name='ingredients',
                 type=OpenApiTypes.STR,
-                description='Comma separated list of ingredient IDs to filter recipes',
+                description='''
+                Comma separated
+                list of ingredient IDs to filter recipes
+                ''',
             )
         ]
     )
@@ -60,7 +65,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
         if ingredients:
             ingredient_ids = self._params_to_ints(ingredients)
             queryset = queryset.filter(ingredients__id__in=ingredient_ids)
-        return queryset.filter(user=self.request.user).order_by('-id').distinct()
+        return queryset.filter(
+            user=self.request.user
+        ).order_by('-id').distinct()
 
     def get_serializer_class(self):
         """Return appropriate serializer class"""
@@ -96,6 +103,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             status=status.HTTP_400_BAD_REQUEST
         )
 
+
 @extend_schema_view(
     list=extend_schema(
         parameters=[
@@ -108,9 +116,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
     )
 )
 class BaseRecipeAttrViewSet(mixins.DestroyModelMixin,
-                             mixins.UpdateModelMixin,
-                             mixins.ListModelMixin,
-                             viewsets.GenericViewSet):
+                            mixins.UpdateModelMixin,
+                            mixins.ListModelMixin,
+                            viewsets.GenericViewSet):
     """Base view set for user owned recipe attributes"""
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
